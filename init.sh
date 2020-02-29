@@ -5,14 +5,17 @@ apt-get upgrade
 
 # Basic Linux Stuff
 apt-get install -y git
-apt install snapd
-apt install curl
+apt-get install snapd
+apt-get install curl
 
 # Nextcloud
 sudo snap install nextcloud
 
 # Installing Samba
-
+sudo apt-get install samba -y
+sudo cp /home/vagrant/smb.conf /etc/samba/smb.conf
+sudo service smbd restart
+sudo ufw allow samba
 
 # Installing Plex
 sudo snap install plexmediaserver

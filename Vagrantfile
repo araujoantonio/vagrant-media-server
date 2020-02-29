@@ -13,12 +13,23 @@ Vagrant.configure("2") do |config|
   end
 
   # Network Settings
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "public_network",  ip: "192.168.1.99", bridge: "en1"
+  config.vm.network "forwarded_port", guest: 80, host: 8081
+  config.vm.network "forwarded_port", guest: 445, host: 4450
 
   # Folder Settings
-  config.vm.synced_folder "/Volumes/TOSHIBA\ EXT/test-vagrant", "/var/www/"#, :nfs => { :mount_options => ["dmode=777", "fmode=666"] }
+  config.vm.synced_folder "D:/vagrant/", "/home/vagrant/"
+  config.vm.synced_folder "D:/nextcloud-vagrant-test/", "/var/www/"
   
+  # Provisioning Samba folders
+  config.vm.synced_folder "E:/time_machine", "/home/vagrant/sambashare/"
+  config.vm.provision :file, source: './smb.conf', destination: '/home/vagrant/smb.conf'
+  
+  # Configuring Plex folders
+  config.vm.synced_folder "D:/media/", "/home/vagrant/media/"
+  config.vm.synced_folder "D:/yoga/", "/home/vagrant/yoga/"
+  
+  # Configuring machine
   config.vm.provision "shell", path: "init.sh"
+
 end
